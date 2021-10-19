@@ -1,34 +1,21 @@
-//console.log("I am here for you", $);
+console.log("I am here for you", $);
 
 (function () {
-    //console.log("sanity check!");
     var currentPlayer = "player1";
     $(".modal").hide();
 
     $(".column").on("click", function (e) {
-        //console.log("clicked on a columns");
         var col = $(e.currentTarget);
-        //console.log("currentTarget is column, inspect to see which ", col);
-        var slotsInCol = col.children();
-        //console.log(slotsInCol);
 
-        // console.log(slotsInCol);
+        var slotsInCol = col.children();
+
         for (var i = slotsInCol.length - 1; i >= 0; i--) {
-            /*do a reverse loop!!!*/
-            /*console.log(
-                "true or false that any of the children has class player1?",
-                slotsInCol.eq(i).hasClass("player1")
-            );
-            console.log(
-                "true or false that any of the children has class player2?",
-                slotsInCol.eq(i).hasClass("player2")
-            );
-            */
+            //check if the slot has a class already
             if (
                 !slotsInCol.eq(i).hasClass("player1") &&
                 !slotsInCol.eq(i).hasClass("player2")
             ) {
-                //console.log("none of them has a class, so add one");
+                //add class if none of the slots
                 slotsInCol.eq(i).addClass(currentPlayer);
 
                 break;
@@ -38,61 +25,40 @@
             return;
         }
         var slotsInRow = $(".row" + i);
-        //console.log("slots in row", slotsInRow);
-        //row5
 
         var allSlots = $(".slot");
-        //console.log(allSlots.eq(22));
-        //allSlots.toArray();
-        //console.log(allSlots);
-
-        //there is 42 of them and each one has an index
-        //console.log("allSlots: ", allSlots);
-
-        //console.log(slotsInRow[0]);
 
         if (checkForVictory(slotsInCol)) {
             popUp();
             console.log("victory for ", currentPlayer);
         } else if (checkForVictory(slotsInRow)) {
-            //do the victory dance!
             popUp();
             console.log("there was a row victory! for ", currentPlayer);
         } else if (checkForDiagonalVictories() == true) {
-            //do the dance
-            //loop through diags and then call a function
             popUp();
             console.log("there was a diagonal victory!");
         } else {
-            //game continues
-            //console.log("current player before calling: ", currentPlayer);
             switchPlayer();
-            //console.log("current player after calling: ", currentPlayer);
         }
-        //Location.reload();
     });
 
-    //logic: look vor 4 slots on one row or col
-    //idea: give it a row or a column as arg, loop over the column or row by using a counter
-    //check if four have player1 or player2-class in a row
+    /*logic: look for 4 slots in one row or col
+    idea: give it a row or a column as arg, loop over the column or row by using a counter
+    check if four have player1 or player2-class in a row*/
+
     function checkForVictory(slots) {
         var count = 0;
         for (var i = 0; i < slots.length; i++) {
-            //console.log(slots.eq(i).hasClass(currentPlayer));
             var slot = $(slots[i]);
-            //console.log(slot);
 
-            //console.log(slot);
             if (slot.hasClass(currentPlayer)) {
-                //it found a slot with the current player
                 count++;
-                //console.log(count);
-                //console.log("count: ", count);
+
                 if (count === 4) {
                     return true;
                 }
             } else {
-                //it found the opther player so we reset back to 0
+                //it found the other player so we reset back to 0
                 count = 0;
             }
         }
@@ -139,9 +105,8 @@
             for (var j = 0; j < diags[i].length; j++) {
                 if (allSlots.eq(diags[i][j]).hasClass(currentPlayer)) {
                     count++;
-                    //console.log(count);
+
                     if (count === 4) {
-                        //console.log("we have a winner!");
                         return true;
                     }
                 } else {
